@@ -9,22 +9,22 @@ import Layout from "../layout/Layout";
 
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([ AllCommunityModule ]);
-
+// Page to list, filter, and manage cafes
 export default function CafesPage() {
   const [cafes, setCafes] = useState([]);
   const [location, setLocation] = useState("");
   const [confirmId, setConfirmId] = useState(null);
   const navigate = useNavigate();
-
+  // Fetch cafes from API
   const fetchCafes = async () => {
     const res = await axios.get(import.meta.env.VITE_API_URL + "/cafes");
     setCafes(res.data);
   };
-
+  // Load cafes on component mount
   useEffect(() => {
     fetchCafes();
   }, []);
-
+  // Handle cafe deletion with confirmation and checks
   const handleDelete = async () => {
     const res = await axios.get(import.meta.env.VITE_API_URL + "/cafes/${confirmId}");
     if (res.data.employees > 0) {
@@ -36,7 +36,7 @@ export default function CafesPage() {
     setConfirmId(null);
     fetchCafes();
   };
-
+  // Define columns for the data grid
   const columns = [
     { headerName: "Logo", field: "logo", cellRenderer: (p) => <img src={p.value} alt="" width="40" /> },
     { headerName: "Name", field: "name" },
@@ -62,10 +62,10 @@ export default function CafesPage() {
       ),
     },
   ];
-
+  // Filter cafes by location
   const filtered = location ? cafes.filter((c) => c.location === location) : cafes;
   const locations = [...new Set(cafes.map((c) => c.location))];
-
+  // Render the cafes page with data grid and controls
   return (
     <Layout>
       <Box display="flex" justifyContent="space-between" mb={2}>

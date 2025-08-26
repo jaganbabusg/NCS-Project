@@ -9,16 +9,14 @@ ModuleRegistry.registerModules([ AllCommunityModule ]);
 import ConfirmDialog from "../components/ConfirmDialog";
 import Layout from "../layout/Layout";
 
-//import "ag-grid-community/styles/ag-grid.css";
-//import "ag-grid-community/styles/ag-theme-alpine.css";
 import axios from "axios";
-
+// Page to list, filter, and manage employees
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
   const [confirmId, setConfirmId] = useState(null);
   const [params] = useSearchParams();
   const navigate = useNavigate();
-
+  // Fetch employees from API, optionally filtering by cafe
   const fetchEmployees = async () => {
     const res = await axios.get(import.meta.env.VITE_API_URL + "/employees");
     let list = res.data;
@@ -26,17 +24,17 @@ export default function EmployeesPage() {
     if (cafe) list = list.filter((e) => e.cafe === cafe);
     setEmployees(list);
   };
-
+  // Load employees on component mount or when search params change
   useEffect(() => {
     fetchEmployees();
   }, [params]);
-
+  // Handle employee deletion with confirmation
   const handleDelete = async () => {
     await axios.delete(import.meta.env.VITE_API_URL + `/employees/${confirmId}`);
     setConfirmId(null);
     fetchEmployees();
   };
-
+  // Define columns for the data grid
   const columns = [
     { headerName: "ID", field: "id" },
     { headerName: "Name", field: "name" },
@@ -54,7 +52,7 @@ export default function EmployeesPage() {
       ),
     },
   ];
-
+  // Render the employees page with data grid and controls
   return (
     <Layout>
       <Box mb={2}>

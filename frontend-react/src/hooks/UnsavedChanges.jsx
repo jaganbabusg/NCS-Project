@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UNSAFE_NavigationContext } from "react-router-dom";
-
+// This hook provides a way to warn users about unsaved changes
+// when they attempt to navigate away from the current page.
 export default function UnsavedChanges() {
   const [isChanges, setChanges] = useState(false);
 

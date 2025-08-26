@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography, Container, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+// Layout component with navigation bar and content container
 export default function Layout({ children }) {
   const navigate = useNavigate();
 

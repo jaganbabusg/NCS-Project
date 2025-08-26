@@ -5,28 +5,27 @@ import { Box, Button, TextField } from "@mui/material";
 import axios from "axios";
 import Layout from "../layout/Layout";
 import UnsavedChanges from "../hooks/UnsavedChanges";
-
+// Form page for creating or editing a cafe
 export default function CafeFormPage() {
   const { id } = useParams(); // new or existing
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", description: "", location: "", logo: null });
   const [touched, setTouched] = useState(false);
-
   const { Prompt, setChanges } = UnsavedChanges();
-
+  // Load existing cafe data if editing
   useEffect(() => {
     if (id) {
       axios.get(import.meta.env.VITE_API_URL + `/cafes/${id}`).then((res) => setForm(res.data));
     }
   }, [id]);
-
+  // Set changes if form is touched
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setForm((f) => ({ ...f, [name]: files ? files[0] : value }));
     setTouched(true);
     setChanges(true);
   };
-
+  // Handle form submission with validation
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.name.length < 6 || form.name.length > 10) {
@@ -41,7 +40,7 @@ export default function CafeFormPage() {
       alert("Logo file must be less than 2MB");
       return;
     }
-
+    // Submit form data
     try {
       if (id) {
         await axios.put(import.meta.env.VITE_API_URL + "/cafes", form);
@@ -55,7 +54,7 @@ export default function CafeFormPage() {
       console.error(err.message);
     }
   };
-
+  // Render form with unsaved changes prompt
   return (
     <Layout>
       <Prompt />

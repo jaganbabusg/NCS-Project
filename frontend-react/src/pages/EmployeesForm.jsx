@@ -5,14 +5,14 @@ import { Box, Button, TextField, RadioGroup, FormControlLabel, Radio, MenuItem }
 import axios from "axios";
 import Layout from "../layout/Layout";
 import UnsavedChanges from "../hooks/UnsavedChanges";
-
+// Form page for creating or editing an employee
 export default function EmployeeFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email_address: "", phone_number: "", gender: "Male", start_date:"", cafe_id: "" });
   const [cafes, setCafes] = useState([]);
   const { Prompt, setChanges } = UnsavedChanges();
-
+  // Load cafes and existing employee data if editing
   useEffect(() => {
     axios.get(import.meta.env.VITE_API_URL + "/cafes").then((res) => setCafes(res.data));
     if (id) {
@@ -24,13 +24,13 @@ export default function EmployeeFormPage() {
       );
     }
   }, [id]);
-
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
     setChanges(true);
   };
-
+  // Handle form submission with validation
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.name.length < 6 || form.name.length > 10) {
@@ -53,7 +53,7 @@ export default function EmployeeFormPage() {
       alert("Please select a cafe");
       return;
     }
-
+    // Submit form data
     try {
       if (id) {
         await axios.put(import.meta.env.VITE_API_URL + "/employees", form);
@@ -66,7 +66,7 @@ export default function EmployeeFormPage() {
       console.error(err.message);
     }
   };
-
+  // Render form with unsaved changes prompt
   return (
     <Layout>
       <Prompt />
