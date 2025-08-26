@@ -37,3 +37,29 @@ Add/Edit Café: validations on name, description, logo, location.
 Add/Edit Employee: validations on name, email, phone (SG format), gender, café assignment.
 Unsaved changes warning before navigation.
 
+
+Backend Setup
+cd backend-mysql
+npm install
+npm run seed
+nodemon index.js
+
+Frontend Setup
+cd frontend-react
+npm install
+npm run dev
+
+API examples
+get /cafes
+get /cafes?location=woodlands
+get /cafes/:id
+post /cafes
+put /cafes
+delete /cafes/:id
+get /employees
+get /employees?cafe=starbucks
+get /employees/:id
+post /employees
+put /employees
+delete /employees/:id
+
